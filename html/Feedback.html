@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea,
+        select {
+            width: calc(100% - 22px); /* Adjust for padding and border */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #imageToEnlarge {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+            border: 1px solid #eee;
+            display: block;
+            margin-top: 15px;
+        }
+        #imageToEnlarge.enlarged {
+            width: 500px; /* Example enlarged size */
+            height: auto;
+            position: fixed; /* Or use a modal for better UX */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: rgba(0,0,0,0.8); /* For modal like effect */
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #confirmationMessage {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            display: none; /* Hidden by default */
+        }
+        #charCount {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        #eventFeeDisplay {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Event Feedback Form</h1>
+        <p><strong>Objective:</strong> Handle blur, change, click, double-click, and keyboard events.</p>
+        <p><strong>Scenario:</strong> Collect real-time feedback and interactions from the user.</p>
+
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" placeholder="Enter phone number">
+                <small id="phoneValidationMessage" style="color: red;"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="eventDropdown">Select Event Fee:</label>
+                <select id="eventDropdown">
+                    <option value="">-- Please select --</option>
+                    <option value="50">Conference A - $50</option>
+                    <option value="100">Workshop B - $100</option>
+                    <option value="25">Webinar C - $25</option>
+                </select>
+                <div id="eventFeeDisplay"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="feedbackTextarea">Your Feedback:</label>
+                <textarea id="feedbackTextarea" rows="5" placeholder="Type your feedback here..."></textarea>
+                <div id="charCount">Characters: 0</div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="submitButton">Submit Feedback</button>
+            </div>
+
+            <div id="confirmationMessage">
+                Thank you for your feedback! Your submission has been received.
+            </div>
+
+            <div class="form-group">
+                <label>Click to Enlarge Image:</label>
+                <img id="imageToEnlarge" src="https://via.placeholder.com/150" alt="Click to Enlarge">
+                <small>Double-click the image to enlarge/reset.</small>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // --- JavaScript for Event Handling (to be implemented) ---
+
+        // 1. Use onblur to validate a phone number field
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        phoneNumberInput.addEventListener('blur', function() {
+            const phoneValidationMessage = document.getElementById('phoneValidationMessage');
+            const phoneNumber = this.value;
+            // Basic validation: checks if it's not empty and contains only digits
+            if (phoneNumber.trim() === '') {
+                phoneValidationMessage.textContent = 'Phone number cannot be empty.';
+            } else if (!/^\d+$/.test(phoneNumber)) {
+                phoneValidationMessage.textContent = 'Phone number must contain only digits.';
+            } else {
+                phoneValidationMessage.textContent = ''; // Clear message if valid
+                // Add more complex regex validation here if needed (e.g., specific format)
+            }
+        });
+
+        // 2. Use onchange on a dropdown to display the selected event fee
+        const eventDropdown = document.getElementById('eventDropdown');
+        const eventFeeDisplay = document.getElementById('eventFeeDisplay');
+        eventDropdown.addEventListener('change', function() {
+            const selectedFee = this.value;
+            if (selectedFee) {
+                eventFeeDisplay.textContent = Selected Event Fee: $${selectedFee};
+            } else {
+                eventFeeDisplay.textContent = '';
+            }
+        });
+
+        // 3. onclick on a submit button to show a confirmation
+        const submitButton = document.getElementById('submitButton');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        const feedbackForm = document.getElementById('feedbackForm');
+
+        // Prevent default form submission to handle confirmation via JavaScript
+        feedbackForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop the form from actually submitting (reloading page)
+            confirmationMessage.style.display = 'block'; // Show the confirmation message
+            // You might also want to clear the form fields here
+            feedbackForm.reset();
+            // Optionally hide the confirmation message after a few seconds
+            setTimeout(() => {
+                confirmationMessage.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        });
+
+
+        // 4. ondblclick on an image to enlarge it
+        const imageToEnlarge = document.getElementById('imageToEnlarge');
+        imageToEnlarge.addEventListener('dblclick', function() {
+            this.classList.toggle('enlarged');
+        });
+
+        // 5. Capture key events in the feedback textarea and count characters
+        const feedbackTextarea = document.getElementById('feedbackTextarea');
+        const charCount = document.getElementById('charCount');
+        feedbackTextarea.addEventListener('keyup', function() {
+            charCount.textContent = Characters: ${this.value.length};
+        });
+        // Also update on initial load if there's pre-filled text
+        feedbackTextarea.dispatchEvent(new Event('keyup'));
+
+    </script>
+
+</body>
+</html>

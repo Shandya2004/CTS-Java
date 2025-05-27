@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saving User Preferences</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #fcfcfc;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        #savePreferencesBtn {
+            background-color: #007bff;
+            color: white;
+        }
+        #savePreferencesBtn:hover {
+            background-color: #0056b3;
+        }
+        #clearPreferencesBtn {
+            background-color: #dc3545;
+            color: white;
+        }
+        #clearPreferencesBtn:hover {
+            background-color: #c82333;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none; /* Hidden by default */
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Saving User Preferences</h1>
+        <p><strong>Objective:</strong> Work with <code>localStorage</code>, <code>sessionStorage</code>, and deletion.</p>
+        <p><strong>Scenario:</strong> Store preferred event type for returning users.</p>
+
+        <div class="form-group">
+            <label for="eventType">Preferred Event Type:</label>
+            <select id="eventType">
+                <option value="">-- Select an event type --</option>
+                <option value="conference">Conference</option>
+                <option value="webinar">Webinar</option>
+                <option value="workshop">Workshop</option>
+                <option value="expo">Expo</option>
+            </select>
+        </div>
+
+        <div>
+            <button id="savePreferencesBtn">Save Preferences</button>
+            <button id="clearPreferencesBtn">Clear Preferences</button>
+        </div>
+
+        <div id="statusMessage" class="message"></div>
+    </div>
+
+    <script>
+        const eventTypeSelect = document.getElementById('eventType');
+        const savePreferencesBtn = document.getElementById('savePreferencesBtn');
+        const clearPreferencesBtn = document.getElementById('clearPreferencesBtn');
+        const statusMessage = document.getElementById('statusMessage');
+
+        const LOCAL_STORAGE_KEY = 'preferredEventTypeLocal';
+        const SESSION_STORAGE_KEY = 'preferredEventTypeSession';
+
+        // Helper function to display messages
+        function displayMessage(msg, type = 'info') {
+            statusMessage.textContent = msg;
+            statusMessage.className = message ${type}; // Reset and apply type class
+            statusMessage.style.display = 'block';
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Task 2: On reload, retrieve and pre-select it
+        // This function runs immediately when the page loads
+        window.addEventListener('load', () => {
+            const savedEventTypeLocal = localStorage.getItem(LOCAL_STORAGE_KEY);
+            const savedEventTypeSession = sessionStorage.getItem(SESSION_STORAGE_KEY);
+
+            if (savedEventTypeLocal) {
+                eventTypeSelect.value = savedEventTypeLocal;
+                displayMessage(Loaded local preference: ${savedEventTypeLocal}, 'info');
+            } else if (savedEventTypeSession) {
+                // If no local storage, check session storage (optional, depends on logic)
+                eventTypeSelect.value = savedEventTypeSession;
+                displayMessage(Loaded session preference: ${savedEventTypeSession}, 'info');
+            } else {
+                displayMessage('No saved preferences found.', 'info');
+            }
+        });
+
+        // Task 1: Save selected event type in localStorage
+        savePreferencesBtn.addEventListener('click', () => {
+            const selectedEventType = eventTypeSelect.value;
+
+            if (selectedEventType) {
+                // Save to localStorage (persists across browser sessions)
+                localStorage.setItem(LOCAL_STORAGE_KEY, selectedEventType);
+                // Also save to sessionStorage for demonstration (persists only for current session)
+                sessionStorage.setItem(SESSION_STORAGE_KEY, selectedEventType);
+                displayMessage(Preferences saved: ${selectedEventType}, 'success');
+            } else {
+                displayMessage('Please select an event type to save.', 'info');
+            }
+        });
+
+        // Task 3: Add a "Clear Preferences" button that clears both localStorage and sessionStorage
+        clearPreferencesBtn.addEventListener('click', () => {
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            sessionStorage.removeItem(SESSION_STORAGE_KEY);
+            eventTypeSelect.value = ''; // Reset the dropdown
+            displayMessage('All preferences cleared.', 'info');
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Events Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 80%; /* Adjust table width as needed */
+            margin: 0 auto; /* Center the table */
+            border-collapse: collapse; /* Collapse borders for a cleaner look */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for the table */
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            vertical-align: top; /* Align content to the top of the cell */
+            border: 1px solid #ddd; /* Light border for cells */
+        }
+
+        .event-image {
+            width: 100%; /* Make image fill its cell width */
+            max-width: 250px; /* Limit max width for consistency */
+            height: auto; /* Maintain aspect ratio */
+            border: 5px solid #3498db; /* Blue border for images as per task */
+            border-radius: 8px; /* Slightly rounded corners for images */
+            display: block; /* Remove extra space below image */
+            margin: 0 auto; /* Center image within its cell */
+        }
+
+        .caption {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Our Community Events Gallery</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Event 1</th>
+                <th>Event 2</th>
+                <th>Event 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <img src="event1.jpg" alt="Local Community Fair" title="A vibrant scene from our annual Community Fair." class="event-image">
+                    <p class="caption">Participants enjoying games and food at the Annual Community Fair.</p>
+                </td>
+                <td>
+                    <img src="event2.jpg" alt="Charity Marathon Finish Line" title="Runners celebrating at the finish line of our Charity Marathon." class="event-image">
+                    <p class="caption">The exciting finish line of our Charity Marathon, raising funds for local schools.</p>
+                </td>
+                <td>
+                    <img src="event3.jpg" alt="Park Cleanup Day Volunteers" title="Volunteers working together during the Park Cleanup Day." class="event-image">
+                    <p class="caption">Dedicated volunteers making our local park beautiful during Cleanup Day.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="event4.jpg" alt="Kids Art Workshop" title="Children proudly displaying their artwork at the Kids Art Workshop." class="event-image">
+                    <p class="caption">Young artists expressing creativity at our popular Kids Art Workshop.</p>
+                </td>
+                <td>
+                    <img src="event5.jpg" alt="Summer Music Festival" title="A band performing on stage at the Summer Music Festival." class="event-image">
+                    <p class="caption">Live music and good vibes at the annual Summer Music Festival.</p>
+                </td>
+                <td>
+                    <img src="event6.jpg" alt="Community Potluck Dinner" title="Neighbors sharing delicious dishes at the Community Potluck Dinner." class="event-image">
+                    <p class="caption">Community members bonding over food at the welcoming Potluck Dinner.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    </body>
+</html>

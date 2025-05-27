@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation for Event Mapping</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #locationDisplay {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            min-height: 80px;
+            text-align: left;
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #343a40;
+        }
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .success-message {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .loading-message {
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Geolocation for Event Mapping</h1>
+        <p><strong>Objective:</strong> Practice geolocation.getCurrentPosition, error handling, and options.</p>
+        <p><strong>Scenario:</strong> Locate the nearest event to the user.</p>
+
+        <button id="findEventsBtn">Find Nearby Events</button>
+
+        <div id="locationDisplay">
+            Click "Find Nearby Events" to get your current location.
+        </div>
+    </div>
+
+    <script>
+        const findEventsBtn = document.getElementById('findEventsBtn');
+        const locationDisplay = document.getElementById('locationDisplay');
+
+        // Function to handle successful geolocation
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const accuracy = position.coords.accuracy; // Accuracy in meters
+
+            locationDisplay.innerHTML = `
+                <p class="success-message">Location found!</p>
+                <p><strong>Latitude:</strong> ${latitude.toFixed(6)}</p>
+                <p><strong>Longitude:</strong> ${longitude.toFixed(6)}</p>
+                <p><strong>Accuracy:</strong> Approx. ${accuracy.toFixed(2)} meters</p>
+                <p><em>Now you can use these coordinates to find nearby events.</em></p>
+            `;
+        }
+
+        // Function to handle geolocation errors (Task: Handle permission denial and timeouts)
+        function error(err) {
+            let errorMessage = "An unknown error occurred.";
+
+            switch (err.code) {
+                case err.PERMISSION_DENIED:
+                    errorMessage = "Location permission denied. Please allow location access in your browser settings to find nearby events.";
+                    break;
+                case err.POSITION_UNAVAILABLE:
+                    errorMessage = "Location information is unavailable. This might be due to network issues or your device not supporting location services.";
+                    break;
+                case err.TIMEOUT:
+                    errorMessage = "The request to get user location timed out. Please try again or check your internet connection.";
+                    break;
+                case err.UNKNOWN_ERROR:
+                default:
+                    errorMessage = "An unexpected error occurred while trying to get your location.";
+                    break;
+            }
+            locationDisplay.innerHTML = <p class="error-message">Error: ${errorMessage}</p>;
+            console.error('Geolocation Error:', err);
+        }
+
+        // Options for getCurrentPosition (Task: Use high accuracy options)
+        const geolocationOptions = {
+            enableHighAccuracy: true, // Request the best possible results
+            timeout: 10000,           // Maximum time (ms) to wait for a position (10 seconds)
+            maximumAge: 0             // Don't use a cached position, always try to get a fresh one
+        };
+
+        // Task: On click, use getCurrentPosition to get and display coordinates
+        findEventsBtn.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                locationDisplay.innerHTML = '<p class="loading-message">Finding your location...</p>';
+                navigator.geolocation.getCurrentPosition(success, error, geolocationOptions);
+            } else {
+                locationDisplay.innerHTML = '<p class="error-message">Geolocation is not supported by your browser.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>

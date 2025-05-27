@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Invite - Media Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh; /* Make body at least viewport height for centering */
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        #videoStatus {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border: 1px solid #b2ebf2;
+            color: #00796b;
+            border-radius: 4px;
+            display: none; /* Hidden by default, shown on onplay */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Video Invite with Media Events</h1>
+        <p><strong>Objective:</strong> Work with &lt;video&gt; and oncanplay event.</p>
+        <p><strong>Scenario:</strong> Show a short event promo video.</p>
+
+        <video id="promoVideo" controls>
+            <source src="your_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <div id="videoStatus"></div>
+
+    </div>
+
+    <script>
+        const promoVideo = document.getElementById('promoVideo');
+        const videoStatus = document.getElementById('videoStatus');
+
+        // Task 2: Use oncanplay to display a message "Video ready to play"
+        promoVideo.addEventListener('canplay', function() {
+            videoStatus.textContent = "Video ready to play!";
+            videoStatus.style.display = 'block'; // Show the message
+        });
+
+        // Task 3: Use onbeforeunload to warn users if they try to leave the form page unfinished
+        // Note: The message displayed by onbeforeunload is browser-dependent and often generic.
+        // Modern browsers prevent custom messages for security/usability.
+        window.addEventListener('beforeunload', function(event) {
+            // In a real scenario, you'd check if there's unsaved data or ongoing processes.
+            // For this example, we'll always trigger it for demonstration.
+            // A non-empty string assignment to returnValue was historically used to trigger a prompt.
+            // Modern browsers show a generic "Are you sure you want to leave?"
+            event.returnValue = "Are you sure you want to leave? Your progress might not be saved.";
+            // For some older browsers, you might still need:
+            // return "Are you sure you want to leave? Your progress might not be saved.";
+        });
+
+        // Optional: Hide the status message after a few seconds or when video starts playing
+        promoVideo.addEventListener('play', function() {
+            videoStatus.style.display = 'none'; // Hide when video starts
+        });
+    </script>
+
+</body>
+</html>
